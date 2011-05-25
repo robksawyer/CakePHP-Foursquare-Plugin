@@ -45,8 +45,6 @@ class FoursquareSource extends DataSource {
      */
         if(!empty($queryData)) {
 
-            debug($queryData);
-            
             $query = $queryData['resource'];
 
             if(isset($queryData['general'])) {
