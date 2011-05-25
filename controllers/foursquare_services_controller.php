@@ -13,6 +13,8 @@ class FoursquareServicesController extends FoursquareAppController {
 
     public $uses = array('Foursquare.Foursquare');
 
+    public $components = array('Foursquare.FoursquareUtils');
+
     function index() {
 
 //        debug($this->Foursquare->getVenue(18225129));
@@ -20,8 +22,10 @@ class FoursquareServicesController extends FoursquareAppController {
     }
 
     public function authorize() {
-        
-        $this->redirect('https://es.foursquare.com/oauth2/authenticate?client_id=TFEGAYBN1KK2TT3M214NWREIDXK5LMMYW05KLTHYHEJ2JI4W&response_type=code&redirect_uri=http://localhost/sites/plugins/foursquare/foursquare_services/getToken');
+
+        $url = $this->FoursquareUtils->getAuthUrl();
+
+        $this->redirect($url);
     }
 
     public function getToken() {
