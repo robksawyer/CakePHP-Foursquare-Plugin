@@ -1,15 +1,24 @@
 <?php
 
+/**
+ * CakePHP DataSource for accessing the Foursquare v2 (OAuth2) API.
+ *
+ * Datasource to access the Foursquare new API
+ *
+ * @author Andrés Smerkin <info@andressmerkin.com.ar>
+ * @link http://www.andressmerkin.com.ar
+ * @copyright (c) 2011 Andrés Smerkin
+ * @license MIT License - http://www.opensource.org/licenses/mit-license.php
+ */
+
 App::import('Core', 'HttpSocket');
 
 class FoursquareSource extends DataSource {
-//
-//    private $accessTokenUrl = 'https://es.foursquare.com/oauth2/access_token';
-//    private $authorizeUrl = 'https://es.foursquare.com/oauth2/authorize';
     
     private $id = null;
     private $secret = null; 
     private $socket = null;
+    private $url = 'https://api.foursquare.com/v2/';
 
     public $description = 'Foursquare API (Based on OAuth2)';
     
@@ -29,17 +38,25 @@ class FoursquareSource extends DataSource {
     public function read($model, $queryData = array()) {
 
         if(!empty($queryData)) {
-            if($queryData['elements']['type'] == 'venues') {
+            $query = implode('/',$queryData['path']).'/';
 
-                $id = $queryData['elements']['id'];
+            if(isset($queryData['id'])) $query .= $queryData['id'];
 
-                $parameters = array(
-                    'oauth_token' => $queryData['token']
-                );
+                //If not oauth_token is set then secret key is configured
+                if(!isset($queryData['oauth_token'])) {
 
-                $url = 'https://api.foursquare.com/v2/venues/';
-                return $this->socket->get($url.$id, $parameters);
-            }
+                    $parameters = array(
+                        'client_id' => $this->id,
+                        'client_secret' => $this->secret,
+                    );
+
+                } else {
+                    $parameters['oauth_token'] = $queryData['oauth_token'];
+                }
+
+                debug($this->url.$query);
+                return $this->socket->get($this->url.$query, $parameters);
+            
         }
         
     }
