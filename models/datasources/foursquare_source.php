@@ -38,9 +38,9 @@ class FoursquareSource extends DataSource {
     public function read($model, $queryData = array()) {
 
         if(!empty($queryData)) {
-            $query = implode('/',$queryData['path']).'/';
+            $query = implode('/',$queryData['path']);
 
-            if(isset($queryData['id'])) $query .= $queryData['id'];
+            if(isset($queryData['id'])) $query .='/'. $queryData['id'];
 
                 //If not oauth_token is set then secret key is configured
                 if(!isset($queryData['oauth_token'])) {
@@ -55,7 +55,9 @@ class FoursquareSource extends DataSource {
                 }
 
                 debug($this->url.$query);
-                return $this->socket->get($this->url.$query, $parameters);
+
+                $result = $this->socket->get($this->url.$query, $parameters);
+                return json_decode($result, true);
             
         }
         
