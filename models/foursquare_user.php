@@ -13,15 +13,19 @@ class FoursquareUser extends FoursquareAppModel {
 
     public $useDbConfig = 'foursquare';
 
-    public function getUser($id = null) {
+    public function getUser($id = null, $aspect = null) {
 
-        if(!$id) return false;
+        if(!$id) $id = 'self';
 
-        $user = $this->find('all', array(
-                    'path' => array('users'),
+        $options = array(
+                    'resource' => 'users',
                     'id' => $id,
-                    'oauth_token' => Configure::read('Foursquare.oauth_token'),
-                ));
+                    'oauth_token' => Configure::read('Foursquare.oauth_token')
+        );
+
+        if(isset($aspect)) $options['aspect'] = $aspect;
+
+        $user = $this->find('all', $options);
 
         return $user; 
     }
@@ -36,6 +40,15 @@ class FoursquareUser extends FoursquareAppModel {
 
         return $leaderboard;
 
+    }
+
+    public function search() {
+        $leaderboard = $this->find('all', array(
+            'path' => array('users', 'search'),
+            'oauth_token' => Configure::read('Foursquare.oauth_token'),
+
+        ));
+        
     }
 
 }

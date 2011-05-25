@@ -36,11 +36,38 @@ class FoursquareSource extends DataSource {
 
 
     public function read($model, $queryData = array()) {
-
+    /*
+     * The format of $queryData shoud be the following
+     *
+     * 'resource', 'general', 'aspect', 'action', 'id'
+     *
+     *  These are the four elements in which the API is divided. 
+     */
         if(!empty($queryData)) {
-            $query = implode('/',$queryData['path']);
 
-            if(isset($queryData['id'])) $query .='/'. $queryData['id'];
+            debug($queryData);
+            
+            $query = $queryData['resource'];
+
+            if(isset($queryData['general'])) {
+                $query .= '/'.$queryData['general'];
+                unset ($queryData['id']);
+                unset ($queryData['aspect']);
+                unset ($queryData['action']);
+            }
+
+            if(isset($queryData['id']))
+                $query .='/'. $queryData['id'];
+             
+
+            if(isset($queryData['aspect'])) {
+                $query .= '/'.$queryData['aspect'];
+                unset ($queryData['action']);
+            }
+            
+            if(isset($queryData['action']))
+                $query .= '/'.$queryData['action'];
+
 
                 //If not oauth_token is set then secret key is configured
                 if(!isset($queryData['oauth_token'])) {
