@@ -45,6 +45,9 @@ class FoursquareSource extends DataSource {
      */
         if(!empty($queryData)) {
 
+            if(!isset($queryData['options']))
+                $queryData['options'] = array();
+
             $query = $queryData['resource'];
 
             if(isset($queryData['general'])) {
@@ -74,9 +77,17 @@ class FoursquareSource extends DataSource {
                         'client_id' => $this->id,
                         'client_secret' => $this->secret,
                     );
-
                 } else {
                     $parameters['oauth_token'] = $queryData['oauth_token'];
+                }
+
+                /**
+                 * @todo improve this block of code
+                 */
+                if(!empty($queryData['options'])) {
+                    foreach($queryData['options'] as $key => $value) {
+                        $parameters[$key] = $value;
+                    }
                 }
 
                 debug($this->url.$query);
