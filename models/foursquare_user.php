@@ -15,7 +15,15 @@ class FoursquareUser extends FoursquareAppModel {
 
     public $useDbConfig = 'foursquare';
 
+    public $useTable = 'users';
+
     public function beforeFind($queryData = array()) {
+
+        /**
+         * @todo improve this chunk of code.
+         *
+         * If id => false then the oauth_token shoudln't be used
+         */
 
         /*
          * If no oauth_token is passed then it's fetched from Configure
@@ -44,7 +52,6 @@ class FoursquareUser extends FoursquareAppModel {
         if(!$id) $id = 'self';
 
         $options = array(
-                    'resource' => 'users',
                     'id' => $id,
         );
         
@@ -64,7 +71,6 @@ class FoursquareUser extends FoursquareAppModel {
     public function getLeaderboard($neighbors = null) {
 
         $parameters =  array(
-            'resource' => 'users',
             'general' =>  'leaderboard',
         );
 
@@ -81,7 +87,6 @@ class FoursquareUser extends FoursquareAppModel {
     
     public function search() {
         $leaderboard = $this->find('all', array(
-            'resource' => 'users',
             'general' => 'search',
         ));
         

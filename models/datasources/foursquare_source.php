@@ -48,7 +48,10 @@ class FoursquareSource extends DataSource {
             if(!isset($queryData['options']))
                 $queryData['options'] = array();
 
-            $query = $queryData['resource'];
+            /*
+             * Here the endpoint is the table that was setup in Model::useTable
+             */
+            $query = $model->useTable;
 
             if(isset($queryData['general'])) {
                 $query .= '/'.$queryData['general'];
@@ -93,29 +96,11 @@ class FoursquareSource extends DataSource {
                 debug($this->url.$query);
 
                 $result = $this->socket->get($this->url.$query, $parameters);
+                
                 return json_decode($result, true);
             
         }
         
     }
     
-//    public function getVenue($venueId = null) {
-//
-//        $url = 'https://api.foursquare.com/v2/venues/';
-//
-//        return $this->__process($this->socket->get($url.$venueId));
-//    
-//    }
-    
-    private function __process($json = null) {
-    
-        if(!$json) return false;
-        
-        return json_decode($json);
-    
-    }
-
-    
-
-
 }

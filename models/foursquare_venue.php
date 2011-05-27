@@ -13,6 +13,8 @@
 class FoursquareVenue extends FoursquareAppModel {
 
     public $useDbConfig = 'foursquare';
+
+    public $useTable = 'venues';
     //put your code here
 }
 ?>
