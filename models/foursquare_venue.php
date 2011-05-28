@@ -15,6 +15,20 @@ class FoursquareVenue extends FoursquareAppModel {
     public $useDbConfig = 'foursquare';
 
     public $useTable = 'venues';
-    //put your code here
+
+    /**
+     * Gets a Venue based on its id
+     *
+     * @param integer $id Venue ID
+     * @return mixed result array
+     */
+    public function getVenue($id = null) {
+        
+        if(!$id) return false;
+
+        return $this->find('all', array('id' => $id));
+
+    }
+
 }
 ?>

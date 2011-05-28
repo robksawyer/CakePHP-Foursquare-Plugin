@@ -85,6 +85,8 @@ class FoursquareUser extends FoursquareAppModel {
     }
 
     
+
+
     public function search() {
         $leaderboard = $this->find('all', array(
             'general' => 'search',

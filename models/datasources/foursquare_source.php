@@ -49,7 +49,7 @@ class FoursquareSource extends DataSource {
                 $queryData['options'] = array();
 
             /*
-             * Here the endpoint is the table that was setup in Model::useTable
+             * Here the endpoint is the table that was configured Model::useTable
              */
             $query = $model->useTable;
 
@@ -100,6 +100,24 @@ class FoursquareSource extends DataSource {
                 return json_decode($result, true);
             
         }
+        
+    }
+
+    public function create($model, $fields = array(), $values = array()) {
+
+        /*
+         * This function is used to create new elements (Checkins, venues, etc). 
+         */
+
+         $url = $this->url.$model->useTable.'/';
+
+         $data = combine($fields, $values);
+
+         $socket = new HttpSocket();
+
+         $result = $socket->post($url, $data);
+
+
         
     }
     
