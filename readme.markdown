@@ -1,1 +1,1 @@
-1. Grab the code from my <a href="http://github.com/asmerkin/CakePHP-Foursquare-Plugin">github account</a> and add it to app/plugins/foursquare directory
+This plugin is based on the plugin <a href="http://github.com/asmerkin/CakePHP-Foursquare-Plugin">CakePHP-Foursquare-Plugin for Cakephp 1.3</a>. I've basically converted it to work with Cakephp 2.+.
