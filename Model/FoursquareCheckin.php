@@ -9,12 +9,12 @@
  * @copyright (c) 2011 Andrés Smerkin
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
  */
-App::uses('CakeSession', 'Model/Datasource');
+/*App::uses('CakeSession', 'Model/Datasource');
 App::uses('DataSource', 'Model/Datasource');
-App::uses('DboSource', 'Model/Datasource');
+App::uses('DboSource', 'Model/Datasource');*/
 class FoursquareCheckin extends FoursquareAppModel {
 
-	public $useDbConfig = 'foursquare';
+	//public $useDbConfig = 'foursquare';
 
 	public $useTable = 'checkins';
 
