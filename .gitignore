@@ -1,2 +1,3 @@
-Config/bootstrap.php
-Config/database.php
+!Config/bootstrap.php
+!Config/database.php
+!.gitignore
