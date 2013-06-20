@@ -9,8 +9,6 @@
  * @copyright (c) 2011 Andrés Smerkin
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
  */
-/*App::uses('CakeSession', 'Model/Datasource');
-App::uses('DboSource', 'Model/Datasource');*/
 class FoursquareVenue extends FoursquareAppModel {
 
     //public $useDbConfig = 'foursquare';
@@ -26,7 +24,12 @@ class FoursquareVenue extends FoursquareAppModel {
  */
     public function getVenue($id = null) {
         if(!$id) return false;
-        return $this->find('all', array('id' => $id));
+        //try{
+        	return $this->find('all', array('id' => $id));
+        //} catch(Exception $e){
+        //	debug($e);
+        //	return false;
+        //}
     }
 
 /**
@@ -56,7 +59,13 @@ class FoursquareVenue extends FoursquareAppModel {
 			)
 		);
 		$queryData['options'] = array_merge($queryData['options'], $options);
-		return $this->find('all', $queryData);
+		//try{
+			return $this->find('all', $queryData);
+		/*}catch(Exception $e){
+			echo $e;
+			return true;
+		}*/
+		
 	}
 
 /**

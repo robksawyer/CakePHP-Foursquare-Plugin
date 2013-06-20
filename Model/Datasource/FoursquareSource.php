@@ -11,7 +11,6 @@
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
  */
 
-//App::import('Core', 'HttpSocket');
 App::uses('DataSource', 'Model/Datasource');
 App::uses('DboSource', 'Model/Datasource');
 App::uses('HttpSocket', 'Network/Http');
@@ -20,7 +19,7 @@ class FoursquareSource extends DataSource {
 	
 	private $id = null;
 	private $secret = null; 
-	private $socket = null;
+	private $Http = null;
 	private $url = 'https://api.foursquare.com/v2/';
 
 	//This is now required by Foursquare (http://bit.ly/vywCav)
@@ -103,7 +102,8 @@ class FoursquareSource extends DataSource {
  */
 	public function __construct($config) {
 		parent::__construct($config);
-		$this->socket = new HttpSocket();
+
+		$this->Http = new HttpSocket();
 		$this->id = $this->config['id'];
 		$this->secret = $this->config['secret'];
 	}
@@ -154,6 +154,7 @@ class FoursquareSource extends DataSource {
  *  These are the four elements in which the API is divided. 
  */
 	public function read(Model $model, $queryData = array()) {
+
 		if(!empty($queryData)) {
 
 			$defaultOptions = array(
@@ -209,9 +210,20 @@ class FoursquareSource extends DataSource {
 				}
 
 				//debug($this->url.$query);
-				//debug($parameters);
-				$result = $this->socket->get($this->url.$query, $parameters);
-				return json_decode($result, true);   
+				/*debug($parameters);
+				debug($queryData);
+				debug($this->url.$query);*/
+				try{
+					$result = $this->Http->get($this->url.$query, $parameters);
+				}catch(Exception $e){
+					debug($e);
+				}
+				if (is_null($result)) {
+					$error = json_last_error();
+					throw new CakeException($error);
+				}else{
+					return json_decode($result, true); 
+				}
 		}
 	}
 
@@ -246,7 +258,7 @@ class FoursquareSource extends DataSource {
 		}
 
 		//$socket = new HttpSocket();
-		$json = $this->socket->post($url, $data);
+		$json = $this->Http->post($url, $data);
 		$result = json_decode($json, true);
 		if (is_null($result)) {
 			$error = json_last_error();
