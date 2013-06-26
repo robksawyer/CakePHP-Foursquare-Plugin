@@ -11,8 +11,6 @@
  */
 class FoursquareUser extends FoursquareAppModel {
 
-    //public $useDbConfig = 'default';
-
     public $useTable = 'users';
 
     public function beforeFind($queryData = array()) {

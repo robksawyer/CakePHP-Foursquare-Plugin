@@ -19,11 +19,12 @@ class FoursquareSource extends DataSource {
 	
 	private $id = null;
 	private $secret = null; 
-	private $Http = null;
 	private $url = 'https://api.foursquare.com/v2/';
 
 	//This is now required by Foursquare (http://bit.ly/vywCav)
 	private $version = '20130101';
+
+	protected $Http = null;
 
 	public $description = 'Foursquare API (Based on OAuth2)';
 	
@@ -103,7 +104,9 @@ class FoursquareSource extends DataSource {
 	public function __construct($config) {
 		parent::__construct($config);
 
-		$this->Http = new HttpSocket();
+		$this->Http = new HttpSocket(array(
+			'ssl_verify_peer' => false //Not reccomended, but this makes requests work locally (http://book.cakephp.org/2.0/en/core-utility-libraries/httpsocket.html)
+		));
 		$this->id = $this->config['id'];
 		$this->secret = $this->config['secret'];
 	}
@@ -158,7 +161,7 @@ class FoursquareSource extends DataSource {
 		if(!empty($queryData)) {
 
 			$defaultOptions = array(
-			   "v" => $this->version //This is now required by Foursquare (http://bit.ly/vywCav)
+			   "v" => intval($this->version) //This is now required by Foursquare (http://bit.ly/vywCav)
 			);
 			if(!empty($queryData['options'])){
 				$queryData['options'] = array_merge($defaultOptions, $queryData['options']);
@@ -186,7 +189,7 @@ class FoursquareSource extends DataSource {
 				$query .= '/'.$queryData['aspect'];
 				unset ($queryData['action']);
 			}
-			
+
 			if(isset($queryData['action']))
 				$query .= '/'.$queryData['action'];
 
@@ -209,12 +212,13 @@ class FoursquareSource extends DataSource {
 					}
 				}
 
-				//debug($this->url.$query);
-				/*debug($parameters);
-				debug($queryData);
-				debug($this->url.$query);*/
+				/*debug($this->url.$query);
+				debug($parameters);
+				debug($queryData);*/
+			
+				$result = '';
 				try{
-					$result = $this->Http->get($this->url.$query, $parameters);
+					$result = $this->Http->get($this->url . $query, $parameters);
 				}catch(Exception $e){
 					debug($e);
 				}
