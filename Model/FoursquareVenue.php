@@ -54,7 +54,7 @@ class FoursquareVenue extends FoursquareAppModel {
 		$queryData = array(
 			'action' => 'search',
 			'options' => array(
-				'limit' => 10,
+				'limit' => $options['limit'],
 				'intent' => 'match'
 			)
 		);
