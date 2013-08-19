@@ -51,6 +51,9 @@ class FoursquareVenue extends FoursquareAppModel {
  * `ll` - (Required unless near is provided. Required for query searches) Latitude and longitude of the user's location. Optional if using intent=global Example: 44.3,37.2
  */
 	public function search($options = array()){
+		if(empty($options['limit'])) {
+			$options['limit'] = 10;
+		}
 		$queryData = array(
 			'action' => 'search',
 			'options' => array(
