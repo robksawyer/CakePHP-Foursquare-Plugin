@@ -156,7 +156,7 @@ class FoursquareSource extends DataSource {
  *
  *  These are the four elements in which the API is divided. 
  */
-	public function read(Model $model, $queryData = array()) {
+	public function read(Model $model, $queryData = array(), $recursive = null) {
 
 		if(!empty($queryData)) {
 
